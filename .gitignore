@@ -1,0 +1,11 @@
+# Node / React
+frontend/node_modules
+frontend/build
+
+# Python / Flask
+backend/venv
+backend/*.pyc
+__pycache__/
+
+# Env files
+*.env

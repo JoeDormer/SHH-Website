@@ -1,0 +1,117 @@
+.formCard {
+  max-width: 600px;
+  margin: 2rem auto;
+  background: #fff;
+  padding: 2rem;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+.submitButton {
+  display: block;
+  width: 100%;
+  padding: 0.75rem;
+  margin-top: 1.5rem;
+  font-size: 1rem;
+  background-color: #28a745;          /* green */
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.submitButton:hover:not(:disabled) {
+  background-color: #218838;          /* darker green on hover */
+}
+
+.submitButton:disabled {
+  background-color: #218838;          /* same darker green while loading/disabled */
+  cursor: not-allowed;
+  opacity: 0.9;
+}
+
+
+/* overlay while loading */
+.loadingOverlay {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0,0,0,0.4);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 999;
+}
+
+.loadingPopup {
+  background: white;
+  padding: 1rem 2rem;
+  border-radius: 6px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+  font-size: 1rem;
+}
+
+/* results card */
+.resultsCard {
+  max-width: 600px;
+  margin: 2rem auto;
+  background: #fff;
+  padding: 2rem;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+/* back button style */
+.backButton {
+  margin-top: 1.5rem;
+  padding: 0.6rem 1rem;
+  font-size: 1rem;
+  background: #6c757d;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+.errorText {
+  color: red;
+  margin: 1rem 0;
+}
+.confirmText {
+  margin-top: 1rem;
+  font-weight: 500;
+}
+
+
+/* message when no slots */
+.noSlotsText {
+  color: #dc3545;
+  margin: 1rem 0;
+  font-weight: 500;
+}
+
+
+.actionsRow {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 1.5rem;
+}
+
+.bookButton {
+  padding: 0.6rem 1rem;
+  font-size: 1rem;
+  background: #28a745;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.bookButton:hover:not(:disabled) {
+  background: #218838;
+}
+
+.bookButton:disabled {
+  opacity: 0.8;
+  cursor: not-allowed;
+}

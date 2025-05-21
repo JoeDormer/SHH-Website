@@ -1,0 +1,9 @@
+Flask
+Flask-Cors
+python-dotenv
+requests
+xmltodict
+stripe
+Flask-SQLAlchemy
+Flask-Migrate
+psycopg2-binary
