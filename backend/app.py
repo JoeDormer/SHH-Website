@@ -214,4 +214,9 @@ def create_payment_intent():
 
 
 if __name__ == '__main__':
-    app.run(port=3001, debug=True)
+
+    import os
+# Use the PORT Render injects; fall back to 3001 locally
+    port = int(os.environ.get('PORT', 3001))
+    # Bind to all interfaces, disable debug
+    app.run(host='0.0.0.0', port=port, debug=False)
