@@ -20,7 +20,7 @@ function CheckoutForm({ clientSecret, unitAmount, currency, onSuccess }) {
   const stripe = useStripe();
   const elements = useElements();
   const [errorMessage, setErrorMessage] = useState('');
-  const [processing, setProcessing]     = useState(false);
+  const [processing, setProcessing] = useState(false);
 
   const handleChange = e => setErrorMessage(e.error?.message || '');
 
@@ -85,8 +85,8 @@ function CheckoutForm({ clientSecret, unitAmount, currency, onSuccess }) {
 
 export default function PaymentPage() {
   const [searchParams] = useSearchParams();
-  const navigate       = useNavigate();
-  const reference      = searchParams.get('reference');
+  const navigate = useNavigate();
+  const reference = searchParams.get('reference');
 
   const booking = useMemo(() => {
     try {
@@ -97,10 +97,10 @@ export default function PaymentPage() {
   }, []);
 
   const [clientSecret, setClientSecret] = useState('');
-  const [productName, setProductName]   = useState('');
-  const [unitAmount, setUnitAmount]     = useState(0);
-  const [currency, setCurrency]         = useState('');
-  const [paid, setPaid]                 = useState(false);
+  const [productName, setProductName] = useState('');
+  const [unitAmount, setUnitAmount] = useState(0);
+  const [currency, setCurrency] = useState('');
+  const [paid, setPaid] = useState(false);
 
   useEffect(() => {
     if (!reference || !booking) return;
@@ -112,11 +112,11 @@ export default function PaymentPage() {
         reference,
         form: {
           firstName: booking.firstName,
-          surname:   booking.surname,
-          phone:     booking.phone,
-          email:     booking.email,
-          address:   booking.address,
-          postcode:  booking.postcode
+          surname: booking.surname,
+          phone: booking.phone,
+          email: booking.email,
+          address: booking.address,
+          postcode: booking.postcode
         },
         selectedDate: booking.visitDate,
         selectedTime: booking.visitWindow
@@ -149,6 +149,14 @@ export default function PaymentPage() {
             <p>
               Your reference is <strong>{booking?.reference}</strong>.
             </p>
+            <div className={styles.summary}>
+              <h3>Booking Summary</h3>
+              <p><strong>Name:</strong> {booking.firstName} {booking.surname}</p>
+              <p><strong>Email:</strong> {booking.email}</p>
+              <p><strong>Phone:</strong> {booking.phone}</p>
+              <p><strong>Address:</strong> {booking.address}, {booking.postcode}</p>
+              <p><strong>Date & Time:</strong> {booking.visitDate}, {booking.visitWindow}</p>
+            </div>
             <button
               className={styles.backButton}
               onClick={() => navigate('/booking')}
@@ -157,7 +165,7 @@ export default function PaymentPage() {
             </button>
           </>
         ) : (
-          <>  
+          <>
             <button onClick={() => navigate(-1)} className={styles.backButton}>
               ← Back to Booking
             </button>
