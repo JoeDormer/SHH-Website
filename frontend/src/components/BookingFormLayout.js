@@ -237,7 +237,7 @@ export default function BookingFormLayout() {
               No available slots found. Please check your postcode and try again, or contact us on XXXXXXXXX.
             </p>
           ) : (
-            <>n              <h2>Select Date &amp; Time</h2>
+            <>              <h2>Select Date &amp; Time</h2>
               <div className={styles.fieldGroup}>
                 <label htmlFor="date" className={styles.label}>Date:</label>
                 <select

@@ -14,8 +14,6 @@ import Header from './Header';
 import Footer from './Footer';
 import styles from '../css/PaymentPage.module.css';
 
-const API = process.env.REACT_APP_API_BASE_URL;
-
 const stripePromise = loadStripe(process.env.REACT_APP_STRIPE_PUBLISHABLE_KEY);
 
 function CheckoutForm({ clientSecret, unitAmount, currency, onSuccess }) {
@@ -51,7 +49,7 @@ function CheckoutForm({ clientSecret, unitAmount, currency, onSuccess }) {
       <div className={styles.fieldGroup}>
         <label className={styles.label}>Card Number</label>
         <div className={styles.cardInput}>
-          <CardNumberElement onChange={handleChange}/>
+          <CardNumberElement onChange={handleChange} />
         </div>
       </div>
 
@@ -59,13 +57,13 @@ function CheckoutForm({ clientSecret, unitAmount, currency, onSuccess }) {
         <div className={styles.fieldGroupSmall}>
           <label className={styles.label}>Expiry</label>
           <div className={styles.cardInput}>
-            <CardExpiryElement onChange={handleChange}/>
+            <CardExpiryElement onChange={handleChange} />
           </div>
         </div>
         <div className={styles.fieldGroupSmall}>
           <label className={styles.label}>CVC</label>
           <div className={styles.cardInput}>
-            <CardCvcElement onChange={handleChange}/>
+            <CardCvcElement onChange={handleChange} />
           </div>
         </div>
       </div>
@@ -90,7 +88,6 @@ export default function PaymentPage() {
   const navigate       = useNavigate();
   const reference      = searchParams.get('reference');
 
-  // get booking and form data from sessionStorage
   const booking = useMemo(() => {
     try {
       return JSON.parse(sessionStorage.getItem('booking'));
@@ -108,8 +105,7 @@ export default function PaymentPage() {
   useEffect(() => {
     if (!reference || !booking) return;
 
-    // send booking & form data to backend so metadata is correct
-    fetch(`${API}/api/create-payment-intent`, {
+    fetch(`${process.env.REACT_APP_API_BASE_URL}/api/create-payment-intent`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
@@ -137,7 +133,6 @@ export default function PaymentPage() {
       .catch(err => console.error(err));
   }, [reference, booking]);
 
-  // called when PaymentIntent succeeds
   const handleSuccess = () => setPaid(true);
 
   return (
@@ -145,68 +140,66 @@ export default function PaymentPage() {
       <Header title="Complete Your Payment" />
 
       <main className={styles.wrapper}>
-        <button onClick={() => navigate(-1)} className={styles.backButton}>
-          ← Back to Booking
-        </button>
-
-        {!booking && (
-          <p className={styles.errorText}>
-            Missing booking data. Please start again.
-          </p>
-        )}
-
-        {/* Booking summary */}
-        {booking && (
-          <div className={styles.summary}>
-            <h3>Booking Summary</h3>
-            <p><strong>Reference:</strong> {booking.reference}</p>
-            <p><strong>Name:</strong> {booking.firstName} {booking.surname}</p>
-            <p><strong>Email:</strong> {booking.email}</p>
-            <p><strong>Phone:</strong> {booking.phone}</p>
-            <p>
-              <strong>Address:</strong> {booking.address}, {booking.postcode}
-            </p>
-            <p>
-              <strong>Date &amp; Time:</strong> {booking.visitDate},{' '}
-              {booking.visitWindow}
-            </p>
-            <hr />
-          </div>
-        )}
-
-        {/* After payment */}
-        {paid && booking && (
-          <div className={styles.thankYou}>
-            <h2>Thank you!</h2>
-            <p>
-              A confirmation is being sent to <strong>{booking.email}</strong>.
-            </p>
-            <p>
-              Your reference is <strong>{booking.reference}</strong>.
-            </p>
-          </div>
-        )}
-
-        {/* Payment form */}
-        {!paid && clientSecret && (
+        {paid ? (
           <>
-            <h2 className={styles.productTitle}>{productName}</h2>
-            <p className={styles.productPrice}>
-              £{(unitAmount/100).toFixed(2)} {currency.toUpperCase()}
+            <h2 className={styles.thankYouTitle}>Thank you!</h2>
+            <p>
+              A confirmation is being sent to <strong>{booking?.email}</strong>.
             </p>
-            <Elements stripe={stripePromise}>
-              <CheckoutForm
-                clientSecret={clientSecret}
-                unitAmount={unitAmount}
-                currency={currency}
-                onSuccess={handleSuccess}
-              />
-            </Elements>
+            <p>
+              Your reference is <strong>{booking?.reference}</strong>.
+            </p>
+            <button
+              className={styles.backButton}
+              onClick={() => navigate('/booking')}
+            >
+              Make Another Booking
+            </button>
           </>
-        )}
+        ) : (
+          <>  
+            <button onClick={() => navigate(-1)} className={styles.backButton}>
+              ← Back to Booking
+            </button>
 
-        {!paid && !clientSecret && (
-          <p>Loading payment details…</p>
+            {!booking && (
+              <p className={styles.errorText}>
+                Missing booking data. Please return to the booking page.
+              </p>
+            )}
+
+            {booking && (
+              <div className={styles.summary}>
+                <h3>Booking Summary</h3>
+                <p><strong>Reference:</strong> {booking.reference}</p>
+                <p><strong>Name:</strong> {booking.firstName} {booking.surname}</p>
+                <p><strong>Email:</strong> {booking.email}</p>
+                <p><strong>Phone:</strong> {booking.phone}</p>
+                <p><strong>Address:</strong> {booking.address}, {booking.postcode}</p>
+                <p><strong>Date & Time:</strong> {booking.visitDate}, {booking.visitWindow}</p>
+                <hr />
+              </div>
+            )}
+
+            {clientSecret ? (
+              <>
+                <h2 className={styles.productTitle}>{productName}</h2>
+                <p className={styles.productPrice}>
+                  £{(unitAmount/100).toFixed(2)} {currency.toUpperCase()}
+                </p>
+                <Elements stripe={stripePromise}>
+                  <CheckoutForm
+                    clientSecret={clientSecret}
+                    unitAmount={unitAmount}
+                    currency={currency}
+                    onSuccess={handleSuccess}
+                  />
+                </Elements>
+              </>
+            ) : (
+              <p>Loading payment details…</p>
+            )}
+          </>
         )}
       </main>
 
