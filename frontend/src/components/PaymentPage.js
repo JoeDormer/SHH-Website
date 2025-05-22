@@ -14,6 +14,8 @@ import Header from './Header';
 import Footer from './Footer';
 import styles from '../css/PaymentPage.module.css';
 
+const API = process.env.REACT_APP_API_BASE_URL;
+
 const stripePromise = loadStripe(process.env.REACT_APP_STRIPE_PUBLISHABLE_KEY);
 
 function CheckoutForm({ clientSecret, unitAmount, currency, onSuccess }) {
@@ -107,7 +109,7 @@ export default function PaymentPage() {
     if (!reference || !booking) return;
 
     // send booking & form data to backend so metadata is correct
-    fetch('/api/create-payment-intent', {
+    fetch(`${API}/api/create-payment-intent`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
