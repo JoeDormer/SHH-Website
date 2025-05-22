@@ -7,5 +7,11 @@ backend/venv
 backend/*.pyc
 __pycache__/
 
-# Env files
+# Environment files
 *.env
+*.env.local
+
+# React / Node
+frontend/node_modules/
+frontend/.cache/
+node_modules/
