@@ -12,8 +12,16 @@ export default function BookingFormLayout() {
   const sevenDays = new Date(today);
   sevenDays.setDate(today.getDate() + 7);
 
-  // form values
-  const [form, setForm]               = useState({
+  // On mount: remove UTM query parameters from the URL
+  useEffect(() => {
+    if (window.location.search) {
+      const cleanPath = window.location.pathname;
+      window.history.replaceState({}, '', cleanPath);
+    }
+  }, []);
+
+  // form values seeded from UTM params
+  const [form, setForm] = useState({
     firstName: params.get('utm_firstName') || '',
     surname:   params.get('utm_surname')   || '',
     phone:     params.get('utm_phone')     || '',
@@ -23,20 +31,20 @@ export default function BookingFormLayout() {
   });
 
   // slot-fetching state
-  const [slots, setSlots]             = useState([]);
-  const [dates, setDates]             = useState([]);
-  const [times, setTimes]             = useState([]);
-  const [selectedDate, setSelectedDate] = useState('');
-  const [selectedTime, setSelectedTime] = useState('');
+  const [slots, setSlots]                 = useState([]);
+  const [dates, setDates]                 = useState([]);
+  const [times, setTimes]                 = useState([]);
+  const [selectedDate, setSelectedDate]   = useState('');
+  const [selectedTime, setSelectedTime]   = useState('');
 
   // UI state
-  const [loading, setLoading]         = useState(false);
+  const [loading, setLoading]             = useState(false);
   const [bookingLoading, setBookingLoading] = useState(false);
-  const [error, setError]             = useState(null);
-  const [bookingError, setBookingError] = useState(null);
-  const [errors, setErrors]           = useState({});
-  const [showSlots, setShowSlots]     = useState(false);
-  const [noSlots, setNoSlots]         = useState(false);
+  const [error, setError]                 = useState(null);
+  const [bookingError, setBookingError]   = useState(null);
+  const [errors, setErrors]               = useState({});
+  const [showSlots, setShowSlots]         = useState(false);
+  const [noSlots, setNoSlots]             = useState(false);
 
   function formatDate(date) {
     return date.toISOString().split('T')[0];
@@ -194,8 +202,7 @@ export default function BookingFormLayout() {
       <Header title="SHH Booking" />
 
       {loading && (
-        <div className={styles.loadingOverlay}>
-          <div className={styles.loadingPopup}>
+        <div className={styles.loadingOverlay}>n          <div className={styles.loadingPopup}>
             Loading available dates…
           </div>
         </div>
@@ -230,8 +237,7 @@ export default function BookingFormLayout() {
               No available slots found. Please check your postcode and try again, or contact us on XXXXXXXXX.
             </p>
           ) : (
-            <>
-              <h2>Select Date &amp; Time</h2>
+            <>n              <h2>Select Date &amp; Time</h2>
               <div className={styles.fieldGroup}>
                 <label htmlFor="date" className={styles.label}>Date:</label>
                 <select
@@ -259,6 +265,7 @@ export default function BookingFormLayout() {
                   </select>
                 </div>
               )}
+
 
               {selectedDate && selectedTime && (
                 <p className={styles.confirmText}>
